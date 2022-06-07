@@ -33,9 +33,10 @@ class Backend(ModelBackend):
 
         if session:
             request.session['crowd_session_last_validation'] = time()
-            request.session['crowd_session_expiry'] = \
-                datetime.fromtimestamp(session['expiry-date'] / 1000).strftime(
-                    '%a, %d-%b-%y %H:%M:%S GMT')
+            if 'expiry-date' in session:
+                request.session['crowd_session_expiry'] = \
+                    datetime.fromtimestamp(session['expiry-date'] / 1000).strftime(
+                        '%a, %d-%b-%y %H:%M:%S GMT')
 
             if 'django_crowd_auth.middlewares.sso' in settings.MIDDLEWARE:
                 # We do not want to store the token in the session because it
